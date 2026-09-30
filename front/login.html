@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
+    <title>Iniciar sesión - GSE Vault</title>
+    <link rel="stylesheet" href="./assets/css/style.css" />
+</head>
+<body>
+    <div class="appHeader">
+        <div class="pageTitle">GSE Vault</div>
+    </div>
+
+    <div class="page-wrapper">
+        <div class="card">
+            <div class="card-body">
+                <div class="text-center mb-4">
+                    <div class="icon-circle">GV</div>
+                    <h1 class="heading">Bienvenido</h1>
+                    <p class="subtitle">Inicia sesión con tu cuenta</p>
+                </div>
+
+                <div id="alert-box" class="alert alert-danger"></div>
+
+                <form id="login-form" novalidate>
+                    <div class="form-group">
+                        <label class="form-label" for="email">Email</label>
+                        <input type="text" id="email" class="form-control" placeholder="tu@correo.com" autocomplete="username" />
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="password">Contraseña</label>
+                        <input type="password" id="password" class="form-control" placeholder="••••••••" autocomplete="current-password" />
+                    </div>
+
+                    <button type="submit" id="btn-login" class="btn btn-primary">Iniciar sesión</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="./assets/js/config.js"></script>
+    <script src="./assets/js/login.js"></script>
+</body>
+</html>

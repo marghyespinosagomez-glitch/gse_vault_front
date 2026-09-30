@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
+    <title>Gestor de llaves - GSE Vault</title>
+    <link rel="stylesheet" href="./assets/css/style.css" />
+</head>
+
+<body>
+    <div class="appHeader">
+        <div class="pageTitle">GSE Vault</div>
+    </div>
+
+    <aside class="sidebar">
+        <nav class="sidebar-nav">
+            <a href="./clients.html" class="sidebar-link">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+                Clientes
+            </a>
+            <a href="./keys.html" class="sidebar-link active">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3">
+                    </path>
+                </svg>
+                Llaves
+            </a>
+            <a href="./admins.html" id="nav-admins" class="sidebar-link" style="display: none;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z"></path>
+                </svg>
+                Administradores
+            </a>
+        </nav>
+        <a href="#" id="link-logout" class="sidebar-link sidebar-logout">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                <polyline points="16 17 21 12 16 7"></polyline>
+                <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+            Cerrar sesión
+        </a>
+    </aside>
+
+    <main class="app-content">
+    <div class="page-wrapper-wide">
+        <div class="toolbar toolbar-column">
+            <div class="toolbar-row">
+                <div class="search-box">
+                    <input type="text" id="search-input"
+                        placeholder="Buscar por nombre, tipo, estado, algoritmo o uuid..." autocomplete="off" />
+                </div>
+                <button type="button" id="btn-open-modal" class="btn btn-primary btn-create">+ Crear llave</button>
+            </div>
+            <div class="toolbar-row">
+                <div class="filter-box date-range-filter">
+                    <label class="form-label date-range-label" for="date-from">Creada desde</label>
+                    <input type="date" id="date-from" class="form-control" />
+                </div>
+                <div class="filter-box date-range-filter">
+                    <label class="form-label date-range-label" for="date-to">Hasta</label>
+                    <input type="date" id="date-to" class="form-control" />
+                </div>
+                <button type="button" id="btn-clear-date-filter" class="btn btn-outline btn-inline">Limpiar fechas</button>
+            </div>
+        </div>
+
+        <div class="table-card">
+            <table class="clients-table">
+                <thead>
+                    <tr>
+                        <th>UUID de la llave</th>
+                        <th class="col-client" style="display: none;">Cliente</th>
+                        <th>Algoritmo</th>
+                        <th>Tipo</th>
+                        <th>Estado</th>
+                        <th>Creada</th>
+                        <th>Llave</th>
+                    </tr>
+                </thead>
+                <tbody id="keys-tbody">
+                </tbody>
+            </table>
+            <div id="empty-state" class="empty-state" style="display: none;">
+                Aún no hay llaves. Crea la primera con el botón "+ Crear llave".
+            </div>
+        </div>
+    </div>
+    </main>
+
+    <!-- Modal: crear llave -->
+    <div id="modal-overlay" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modal-title">Crear llave</h2>
+                <button type="button" id="btn-close-modal" class="modal-close">&times;</button>
+            </div>
+
+            <div id="modal-alert" class="alert alert-danger"></div>
+
+            <form id="create-key-form" novalidate>
+                <div class="form-group" id="key-client-group" style="display: none;">
+                    <label class="form-label" for="key-client">Cliente</label>
+                    <select id="key-client" class="form-control"></select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="key-algorithm">Algoritmo</label>
+                    <select id="key-algorithm" class="form-control">
+                        <option value="3DES">3DES (24 caracteres)</option>
+                        <option value="AES">AES (32 caracteres)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="key-pvkey">Llave privada</label>
+                    <div class="input-with-action">
+                        <input type="text" id="key-pvkey" class="form-control" placeholder="Llave simétrica"
+                            autocomplete="off" />
+                        <button type="button" id="btn-generate-key" class="btn btn-outline btn-inline">Generar</button>
+                    </div>
+                    <small id="key-pvkey-feedback" class="form-hint"></small>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="key-main" />
+                        Llave principal
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="key-dynamic" />
+                        Llave dinámica
+                    </label>
+                </div>
+                <div id="dynamic-fields" style="display: none;">
+                    <div class="form-group">
+                        <label class="form-label" for="key-dynamic-freq">Frecuencia de rotación (segundos)</label>
+                        <input type="number" id="key-dynamic-freq" class="form-control" min="1" value="3600" />
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="key-dynamic-window">Ventana de tiempo</label>
+                        <input type="number" id="key-dynamic-window" class="form-control" min="1" value="5" />
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="key-dynamic-from">Válida desde (opcional)</label>
+                        <input type="datetime-local" id="key-dynamic-from" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="key-dynamic-to">Vigencia dinámica hasta (opcional)</label>
+                        <input type="datetime-local" id="key-dynamic-to" class="form-control" />
+                    </div>
+                </div>
+
+                <button type="submit" id="btn-submit-key" class="btn btn-primary">Crear llave</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="./assets/js/config.js"></script>
+    <script src="./assets/js/keys.js"></script>
+</body>
+
+</html>

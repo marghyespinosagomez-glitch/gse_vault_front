@@ -1,0 +1,10 @@
+{
+  "name": "poc-gse-vault-front",
+  "version": "1.0.0",
+  "description": "Frontend estatico (login/clientes) para poc_gse_vault",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "license": "ISC"
+}
